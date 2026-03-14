@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dglskejsug46h"]
+
+[ext_resource type="Script" uid="uid://bqm5jbst1raf" path="res://projector.gd" id="1_a87tn"]
+
+[node name="Projector" type="Node3D" unique_id=1205601254]
+script = ExtResource("1_a87tn")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=646450766]
+size_2d_override_stretch = true
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport" unique_id=426235120]

@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://0phlhkb6b4ic"
+path="res://.godot/imported/water_flux.glsl-ee5fa08495dea919af15feed38ffc5b9.res"
+
+[deps]
+
+source_file="res://water_flux.glsl"
+dest_files=["res://.godot/imported/water_flux.glsl-ee5fa08495dea919af15feed38ffc5b9.res"]
+
+[params]
+

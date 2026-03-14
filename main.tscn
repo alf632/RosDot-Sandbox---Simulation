@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://crvpbcejj5sc8"]
+
+[ext_resource type="Script" uid="uid://dm57wjtsjo4xn" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://cm4urueli34oi" path="res://terrain.gd" id="1_ig7tw"]
+[ext_resource type="Shader" uid="uid://co5u04soh8qv4" path="res://terrain.gdshader" id="2_0xm2m"]
+[ext_resource type="Shader" uid="uid://ccc5thniobkcg" path="res://water.gdshader" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://dglskejsug46h" path="res://projector.tscn" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://bsk6wehkyjqej" path="res://heightmap_receiver.gd" id="5_7mycd"]
+[ext_resource type="Texture2D" uid="uid://b03sef3rr7hr1" path="res://ripples_texture_2d.tres" id="5_272bh"]
+
+[sub_resource type="Gradient" id="Gradient_h2yge"]
+offsets = PackedFloat32Array(0, 0.25675675, 0.5743243, 0.8175676, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.5921569, 0.5176471, 0.21568628, 1, 0.24540776, 0.49013078, 0.18137518, 1, 0.40784314, 0.2784314, 0.28627452, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1bvp3"]
+gradient = SubResource("Gradient_h2yge")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h2yge"]
+render_priority = 0
+shader = ExtResource("2_0xm2m")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_1bvp3")
+shader_parameter/height_scale = 1.0
+shader_parameter/contour_interval = 0.05
+shader_parameter/contour_thickness = 0.5
+shader_parameter/plane_size = 6.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ig7tw"]
+size = Vector2(6, 6)
+subdivide_width = 255
+subdivide_depth = 255
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mycd"]
+render_priority = 0
+shader = ExtResource("3_lquwl")
+shader_parameter/water_tint = Color(0.1, 0.4, 0.7, 1)
+shader_parameter/normal_map = ExtResource("5_272bh")
+shader_parameter/ripple_scale = 20.0
+shader_parameter/flow_speed = 1.0
+shader_parameter/ripple_strength = 0.8
+shader_parameter/height_scale = 1.0
+shader_parameter/plane_size = 6.0
+shader_parameter/foam_threshold = 0.01
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_272bh"]
+size = Vector2(6, 6)
+subdivide_width = 255
+subdivide_depth = 255
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_lquwl"]
+
+[node name="Main" type="Node3D" unique_id=1853898936]
+script = ExtResource("1_h2yge")
+
+[node name="Terrain" type="Node3D" parent="." unique_id=1456488402]
+script = ExtResource("1_ig7tw")
+
+[node name="TerrainMesh" type="MeshInstance3D" parent="Terrain" unique_id=2146582667]
+material_override = SubResource("ShaderMaterial_h2yge")
+mesh = SubResource("PlaneMesh_ig7tw")
+
+[node name="WaterMesh" type="MeshInstance3D" parent="Terrain" unique_id=1349399776]
+material_override = SubResource("ShaderMaterial_7mycd")
+mesh = SubResource("PlaneMesh_272bh")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain" unique_id=1223620918]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/StaticBody3D" unique_id=249531366]
+shape = SubResource("HeightMapShape3D_lquwl")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=562847172]
+transform = Transform3D(1, 0, 0, 0, 0.4383398, 0.8988094, 0, -0.8988094, 0.4383398, -0.10781574, 3.0186596, 2.0088012)
+current = true
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=2013804683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0884428, 2.461522, -1.5197697)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1070038538]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3720202, 1.6116023, -0.24544811)
+
+[node name="Projector" parent="." unique_id=1205601254 instance=ExtResource("4_lquwl")]
+
+[node name="HeightmapReceiver" type="Node" parent="." unique_id=132718322]
+script = ExtResource("5_7mycd")
