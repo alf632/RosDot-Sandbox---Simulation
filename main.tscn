@@ -4,9 +4,10 @@
 [ext_resource type="Script" uid="uid://cm4urueli34oi" path="res://terrain.gd" id="1_ig7tw"]
 [ext_resource type="Shader" uid="uid://co5u04soh8qv4" path="res://terrain.gdshader" id="2_0xm2m"]
 [ext_resource type="Shader" uid="uid://ccc5thniobkcg" path="res://water.gdshader" id="3_lquwl"]
-[ext_resource type="PackedScene" uid="uid://dglskejsug46h" path="res://projector.tscn" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://bsk6wehkyjqej" path="res://heightmap_receiver.gd" id="5_7mycd"]
 [ext_resource type="Texture2D" uid="uid://b03sef3rr7hr1" path="res://ripples_texture_2d.tres" id="5_272bh"]
+[ext_resource type="Script" uid="uid://ccg5oy63uf02a" path="res://projector_controller.gd" id="8_5vw27"]
+[ext_resource type="PackedScene" uid="uid://dglskejsug46h" path="res://projector.tscn" id="8_kek77"]
 
 [sub_resource type="Gradient" id="Gradient_h2yge"]
 offsets = PackedFloat32Array(0, 0.25675675, 0.5743243, 0.8175676, 1)
@@ -48,6 +49,8 @@ subdivide_depth = 255
 
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_lquwl"]
 
+[sub_resource type="ImageTexture" id="ImageTexture_272bh"]
+
 [node name="Main" type="Node3D" unique_id=1853898936]
 script = ExtResource("1_h2yge")
 
@@ -75,9 +78,29 @@ current = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0884428, 2.461522, -1.5197697)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1070038538]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3720202, 1.6116023, -0.24544811)
-
-[node name="Projector" parent="." unique_id=1205601254 instance=ExtResource("4_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5987345, 1.6116023, -0.24544811)
 
 [node name="HeightmapReceiver" type="Node" parent="." unique_id=132718322]
 script = ExtResource("5_7mycd")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2135782693]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("ImageTexture_272bh")
+
+[node name="ProjectorController" type="Node3D" parent="." unique_id=2008467194]
+script = ExtResource("8_5vw27")
+
+[node name="Projectors" type="Node3D" parent="ProjectorController" unique_id=1274531202]
+
+[node name="Projector" parent="ProjectorController/Projectors" unique_id=1205601254 instance=ExtResource("8_kek77")]
+useStreamer = true
+
+[node name="SubViewport" parent="ProjectorController/Projectors/Projector" index="0" unique_id=646450766]
+render_target_update_mode = 4
+
+[node name="Camera3D" parent="ProjectorController/Projectors/Projector/SubViewport" index="0" unique_id=426235120]
+transform = Transform3D(-2.5599622e-08, 0.8105633, -0.58565116, 3.5430844e-08, 0.58565116, 0.8105633, 1, -1.3056809e-15, -4.3711392e-08, -3.0584068, 2.1111994, 0)
+current = true
+
+[editable path="ProjectorController/Projectors/Projector"]

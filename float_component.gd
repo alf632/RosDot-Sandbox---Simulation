@@ -7,6 +7,8 @@ class_name WaterFloater
 @export var water_drag := 2.0        # Physical drag force applied when submerged
 @export var object_height := 0.05
 
+var lifetime = 0
+
 var body: RigidBody3D
 
 func _ready() -> void:
@@ -20,6 +22,10 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(water_sim) or not body:
 		return
 
+	lifetime += delta
+	if lifetime > 200:
+		body.queue_free()
+		
 	var info = water_sim.get_surface_info(global_position)
 	var surface_y = info.x
 	var water_depth = info.y

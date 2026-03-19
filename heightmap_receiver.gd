@@ -27,6 +27,7 @@ func _process(_delta):
 		
 		if err == OK:
 			img.convert(Image.FORMAT_RF)
+			img.flip_y()
 			heightmap = img
 			emit_signal("newHeightmap")
 			# Optional: Pass this texture to your terrain shader material

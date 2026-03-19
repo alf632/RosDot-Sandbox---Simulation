@@ -21,11 +21,12 @@ func _process(delta: float) -> void:
 
 func update_heightmap():
 	terrain.update_heightmap(heightmapReceiver.heightmap)
+	$TextureRect.texture = ImageTexture.create_from_image(heightmapReceiver.heightmap)
 
 func spawn_ball():
 	var newBall = BallScene.instantiate()
 	newBall.find_child("FloatComponent").water_sim = terrain
 	var msize = terrain.mesh_size
-	var randpos = Vector3(randf()*(msize-1) - (msize-1)/2, 0, randf()*(msize-1) - (msize-1)/2)
+	var randpos = Vector3(randf()*(msize/4) - (msize/4)/2, 0, randf()*(msize/4) - (msize/4)/2)
 	add_child(newBall)
 	newBall.global_position = Vector3(randpos.x, terrain.get_surface_info(randpos).x+0.5, randpos.z)

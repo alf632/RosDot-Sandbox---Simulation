@@ -106,7 +106,7 @@ func _ready() -> void:
 		w_mat.set_shader_parameter("terrain_map", terrain_tex)
 
 	# Initialize Test Sources/Drains
-	water_sources.append({"pos": Vector2(0.5, 0.5), "strength": 0.5, "radius": 0.02})
+	water_sources.append({"pos": Vector2(0.5, 0.5), "strength": 0.2, "radius": 0.02})
 	#water_sources.append({"pos": Vector2(0.4, 0.6), "strength": 0.05, "radius": 0.02})
 	#water_sources.append({"pos": Vector2(0.6, 0.6), "strength": 0.05, "radius": 0.02})
 	#water_drains.append({"pos": Vector2(0.7, 0.7), "strength": 0.07, "radius": 0.02})
@@ -234,7 +234,8 @@ func get_surface_velocity(world_pos: Vector3) -> Vector3:
 func update_heightmap(img :Image):
 	rd.texture_update(terrain_rd_rid, 0, img.get_data())
 	terrain_tex.update(img)
-	#terrain_mesh.get_active_material(0).set_shader_parameter("terrain_map", terrain_tex)
+	terrain_mesh.get_active_material(0).set_shader_parameter("terrain_map", terrain_tex)
+	water_mesh.get_active_material(0).set_shader_parameter("terrain_map", terrain_tex)
 	collision_shape.shape.update_map_data_from_image(img, 0, height_scale)
 	cpu_terrain_data = img.get_data().to_float32_array()
 
